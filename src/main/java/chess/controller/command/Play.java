@@ -1,75 +1,63 @@
-package chess;
+package chess.controller.command;
 
 import chess.domain.board.Board;
 import chess.domain.piece.Piece;
 import chess.domain.piece.Position;
-import chess.dto.BoardDTO;
 import chess.dto.PiecesDTO;
-import chess.view.InputView;
 import chess.view.OutputView;
 import java.util.Map;
 import java.util.Objects;
 
-public final class ChessController {
+public class Play extends AbstractCommand {
 
     private static final String newline = System.lineSeparator();
     private static final int CHESS_SIZE = 8;
+    private static final int MOVE_COMMAND_SIZE = 3;
+    private static final int TARGET_INDEX = 2;
+    private static final int SOURCE_INDEX = 1;
     private static final String CHESS_COLUMN = "abcdefgh";
 
-    public void run() {
-        OutputView.printStart();
-        final Board board = new Board();
-        Command command = new Command();
-        while (!command.isExit()) {
-            command = new Command(InputView.askCommand());
-            commandIsStart(board, command);
-            commandIsStatus(board, command);
-        }
+    public Play(final Board board) {
+        super(board);
+        board.init();
+        printBoard();
     }
 
-    private void commandIsStart(final Board board, final Command command) {
-        if (command.isStart()) {
-            board.init();
-            printBoard(board);
-            playChess(board);
+    @Override
+    public Command execute(final String command) {
+        if ("end".equals(command)) {
+            return new Finish(board);
         }
+        if (commandIsStatus(command)) {
+            return this;
+        }
+        final String[] commands = command.split(" ");
+        if (command.startsWith("move") && validateMove(commands)) {
+            pieceMove(commands);
+            printBoard();
+            return this;
+        }
+        printErrorMessage("end, status, move");
+        return this;
     }
 
-    private void playChess(final Board board) {
-        Command command = new Command();
-        while (!board.isFinish() && !command.isEnd()) {
-            command = new Command(InputView.askCommand());
-            commandIsMove(board, command);
-            commandIsStatus(board, command);
-            printBoard(board);
-        }
-    }
-
-    private void commandIsMove(Board board, Command command) {
-        if (command.isMove()) {
-            movePiece(board, command);
-        }
-    }
-
-    private void movePiece(Board board, Command command) {
+    private void pieceMove(String[] commands) {
         try {
-            board.movePiece(command.sourcePosition(), command.targetPosition());
+            board.movePiece(commands[SOURCE_INDEX], commands[TARGET_INDEX]);
         } catch (Exception e) {
             OutputView.printErrorMessage(e.getMessage());
         }
     }
 
-    private void printBoard(final Board board) {
+    private boolean validateMove(final String[] commands) {
+        return commands.length == MOVE_COMMAND_SIZE;
+    }
+
+    private void printBoard() {
         final Map<Position, Piece> pieces = board.pieces();
         final PiecesDTO piecesDTO = new PiecesDTO(piecesToString(pieces));
 
         OutputView.printBoard(piecesDTO);
-    }
-
-    private void commandIsStatus(final Board board, final Command command) {
-        if (command.isStatus()) {
-            OutputView.printStatus(new BoardDTO(board));
-        }
     }
 
     private String piecesToString(final Map<Position, Piece> pieces) {
