@@ -106,4 +106,11 @@ class PositionTest {
 
         assertThat(Position.of("a2").hashCode()).isEqualTo(Position.of(1, 0).hashCode());
     }
+
+    @Test
+    @DisplayName("입력들어오는 값에 대한 에러테스트")
+    void inputValidate() {
+        assertThatThrownBy(() -> Position.of("ab3")).isInstanceOf(IllegalArgumentException.class);
+        assertThatThrownBy(() -> Position.of("a")).isInstanceOf(IllegalArgumentException.class);
+    }
 }

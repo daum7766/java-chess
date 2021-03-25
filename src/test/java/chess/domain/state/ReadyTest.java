@@ -21,7 +21,7 @@ class ReadyTest {
     @Test
     @DisplayName("우승자 확인 테스트 ")
     void winner() {
-        assertThat(ready.winner()).isEqualTo(Color.BLANK);
+        assertThat(ready.winner()).isNull();
     }
 
     @Test

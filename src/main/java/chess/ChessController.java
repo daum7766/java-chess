@@ -8,6 +8,7 @@ import chess.dto.PiecesDTO;
 import chess.view.InputView;
 import chess.view.OutputView;
 import java.util.Map;
+import java.util.Objects;
 
 public final class ChessController {
 
@@ -75,13 +76,21 @@ public final class ChessController {
         final StringBuilder stringBuilder = new StringBuilder();
         int count = 0;
         for (Piece piece : pieces.values()) {
-            stringBuilder.append(piece.symbol());
+            addSymbol(stringBuilder, piece);
             count++;
             chessNewLine(stringBuilder, count);
         }
         stringBuilder.append(newline);
         stringBuilder.append(CHESS_COLUMN);
         return stringBuilder.toString();
+    }
+
+    private void addSymbol(StringBuilder stringBuilder, Piece piece) {
+        if (Objects.isNull(piece)) {
+            stringBuilder.append(".");
+            return;
+        }
+        stringBuilder.append(piece.symbol());
     }
 
     private void chessNewLine(final StringBuilder stringBuilder, final int count) {

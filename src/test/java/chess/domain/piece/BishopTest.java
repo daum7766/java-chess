@@ -18,7 +18,7 @@ class BishopTest {
 
     @BeforeEach
     void setUp() {
-        bishop = new Bishop(Color.BLANK, Position.of("e5"));
+        bishop = new Bishop(Color.BLACK, Position.of("e5"));
 
         Pieces pieces = new Pieces();
         pieces.init();

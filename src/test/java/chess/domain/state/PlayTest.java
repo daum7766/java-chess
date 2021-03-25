@@ -29,7 +29,7 @@ class PlayTest {
     @Test
     @DisplayName("우승자 확인 테스트")
     void winner() {
-        assertThat(play.winner()).isEqualTo(Color.BLANK);
+        assertThat(play.winner()).isNull();
     }
 
     @Test
