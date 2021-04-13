@@ -9,15 +9,17 @@ import java.util.Objects;
 
 public abstract class AbstractDAO {
 
+    private static final String SERVER = "localhost:13306";
+    private static final String DATABASE = "db_name";
+    private static final String OPTION = "?useSSL=false&serverTimezone=UTC&useUnicode=true&characterEncoding=utf8";
+    private static final String USERNAME = "root";
+    private static final String PASSWORD = "root";
+
     protected AbstractDAO() {}
 
     public Connection connection() {
+
         Connection connection = null;
-        String server = "localhost:13306";
-        String database = "db_name";
-        String option = "?useSSL=false&serverTimezone=UTC&useUnicode=true&characterEncoding=utf8";
-        String userName = "root";
-        String password = "root";
 
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
@@ -28,8 +30,8 @@ public abstract class AbstractDAO {
 
         try {
             connection = DriverManager
-                .getConnection("jdbc:mysql://" + server + "/" + database + option, userName,
-                    password);
+                .getConnection("jdbc:mysql://" + SERVER + "/" + DATABASE + OPTION, USERNAME,
+                    PASSWORD);
         } catch (SQLException e) {
             System.err.println("연결 오류:" + e.getMessage());
             e.printStackTrace();
