@@ -6,6 +6,12 @@ import chess.view.OutputView;
 
 public abstract class AbstractCommand implements Command {
 
+    protected static final String STATUS_COMMAND = "status";
+    protected static final String MOVE_COMMAND = "move";
+    protected static final String START_COMMAND = "start";
+    protected static final String END_COMMAND = "end";
+    protected static final String EXIT_COMMAND = "exit";
+
     protected final Board board;
 
     protected AbstractCommand(final Board board) {
@@ -23,7 +29,7 @@ public abstract class AbstractCommand implements Command {
     }
 
     protected boolean commandIsStatus(String command) {
-        if ("status".equals(command)) {
+        if (STATUS_COMMAND.equals(command)) {
             OutputView.printStatus(new BoardDTO(board));
             return true;
         }

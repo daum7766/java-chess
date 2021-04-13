@@ -16,6 +16,7 @@ public final class Play extends AbstractCommand {
     private static final int TARGET_INDEX = 2;
     private static final int SOURCE_INDEX = 1;
     private static final String CHESS_COLUMN = "abcdefgh";
+    private static final String POSSIBLE_COMMANDS = "end, status, move";
 
     public Play(final Board board) {
         super(board);
@@ -25,19 +26,19 @@ public final class Play extends AbstractCommand {
 
     @Override
     public Command execute(final String command) {
-        if ("end".equals(command)) {
+        if (END_COMMAND.equals(command)) {
             return new Finish(board);
         }
         if (commandIsStatus(command)) {
             return this;
         }
         final String[] commands = command.split(" ");
-        if (command.startsWith("move") && validateMove(commands)) {
+        if (command.startsWith(MOVE_COMMAND) && validateMove(commands)) {
             pieceMove(commands);
             printBoard();
             return this;
         }
-        printErrorMessage("end, status, move");
+        printErrorMessage(POSSIBLE_COMMANDS);
         return this;
     }
 

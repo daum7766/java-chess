@@ -5,6 +5,8 @@ import chess.view.OutputView;
 
 public final class Ready extends AbstractCommand {
 
+    private static final String POSSIBLE_COMMANDS = "start, exit";
+
     public Ready(final Board board) {
         super(board);
         OutputView.printStart();
@@ -12,13 +14,13 @@ public final class Ready extends AbstractCommand {
 
     @Override
     public Command execute(final String command) {
-        if ("start".equals(command)) {
+        if (START_COMMAND.equals(command)) {
             return new Play(board);
         }
-        if ("exit".equals(command)) {
+        if (EXIT_COMMAND.equals(command)) {
             return new Exit(board);
         }
-        printErrorMessage("start, exit");
+        printErrorMessage(POSSIBLE_COMMANDS);
         return this;
     }
 }

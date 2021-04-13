@@ -4,6 +4,8 @@ import chess.domain.board.Board;
 
 public final class Finish extends AbstractCommand{
 
+    private static final String POSSIBLE_COMMANDS = "start, status, exit";
+
     public Finish(final Board board) {
         super(board);
     }
@@ -13,13 +15,13 @@ public final class Finish extends AbstractCommand{
         if (commandIsStatus(command)) {
             return this;
         }
-        if ("exit".equals(command)) {
+        if (EXIT_COMMAND.equals(command)) {
             return new Exit(board);
         }
-        if ("start".equals(command)) {
+        if (START_COMMAND.equals(command)) {
             return new Play(new Board());
         }
-        printErrorMessage("start, status, exit");
+        printErrorMessage(POSSIBLE_COMMANDS);
         return this;
     }
 }
